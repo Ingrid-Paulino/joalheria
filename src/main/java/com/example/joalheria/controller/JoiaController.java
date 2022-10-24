@@ -16,6 +16,7 @@ public class JoiaController {
     @Autowired
     private JoiaService service;
 
+    //Usei Request Body
     @PostMapping("/inserir")
     public ResponseEntity<String> insert(@RequestBody JoiaBD joia) {
         JoiaBD newJoia = service.insert(joia);
@@ -28,17 +29,33 @@ public class JoiaController {
         return new ResponseEntity<>(joias, HttpStatus.CREATED);
     }
 
-    // joia/excluir?numero_identificacao={id}
-    // joia/excluir?numero_identificacao=1
-    @DeleteMapping("/excluir")
-    public ResponseEntity<Void> delete(@RequestParam long numero_identificacao) {
-        service.delete(numero_identificacao);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<JoiaBD>> findById(@PathVariable long id) {
         Optional<JoiaBD> optionalJoiaBD = service.findByid(id);
         return new ResponseEntity<>(optionalJoiaBD, HttpStatus.OK);
+    }
+
+    //@PutMapping
+    //public ResponseEntity<JoiaBD> update(@RequestBody JoiaBD joia) {
+    //JoiaBD joiaUpdate = service.update(joia);
+    //  return new ResponseEntity<>(joiaUpdate, HttpStatus.OK);
+    //}
+
+    //Ou
+    //joia/atualizar?número identificacao={}
+    @PutMapping("/atualizar")
+    public ResponseEntity<JoiaBD> update(@RequestParam long numero_identificacao,
+                                         @RequestBody JoiaBD joia) {
+        JoiaBD joiaUpdate = service.update(joia, numero_identificacao);
+        return new ResponseEntity<>(joiaUpdate, HttpStatus.OK);
+    }
+
+    // joia/excluir?numero_identificacao={id}
+    // joia/excluir?numero_identificacao=1
+    //Usei Request Param
+    @DeleteMapping("/excluir")
+    public ResponseEntity<Void> delete(@RequestParam long numero_identificacao) {
+        service.delete(numero_identificacao);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
