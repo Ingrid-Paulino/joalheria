@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JoiaService implements IJoiaService{
@@ -35,7 +36,17 @@ public class JoiaService implements IJoiaService{
 
     //Forma 2: Declarando o repositorio(JoiaRepo) com
     @Override
-    public List<JoiaBD> findAllJoias() {
+    public List<JoiaBD> findAll() {
         return repo.findAll();
+    }
+
+    @Override
+    public void delete(long id) {
+        repo.deleteById(id);
+    }
+
+    @Override
+    public Optional<JoiaBD> findByid(long id) {
+        return repo.findById(id);
     }
 }
