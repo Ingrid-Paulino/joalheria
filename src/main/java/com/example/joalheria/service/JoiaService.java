@@ -1,5 +1,6 @@
 package com.example.joalheria.service;
 
+import com.example.joalheria.advisor.exception.NotFoundException;
 import com.example.joalheria.model.JoiaBD;
 import com.example.joalheria.repository.JoiaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 // import java.util.ArrayList;
 // import java.util.Iterator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,7 +20,7 @@ public class JoiaService implements IJoiaService{
 
     @Override
     public JoiaBD insert(JoiaBD joia) {
-        JoiaBD newJoia = repo.save(joia);
+        JoiaBD newJoia = repo.save(joia); //save insere e atualiza as coisas no banco
         return newJoia;
     }
 
@@ -40,25 +42,35 @@ public class JoiaService implements IJoiaService{
     public List<JoiaBD> findAll() {
         return repo.findAll();
     }
+
     @Override
-    public Optional<JoiaBD> findByid(long id) {
+    public Optional<JoiaBD> findById(long id) throws NotFoundException {
+        List<JoiaBD> existJoia = findAll().stream()
+                .filter(j -> j.getIdentificationNumber() == id)
+                .collect(Collectors.toList());
+
+        if(existJoia.isEmpty()) {
+            throw new NotFoundException("Joia not found!");
+        }
         return repo.findById(id);
     }
 
     //@Override
-    //public JoiaBD update(JoiaBD joia) {
+    //public JoiaBD update(JoiaBD joia) throws NotFoundException {
+    //findByid(numero_identificacao);
     //return repo.save(joia);
     //}
 
     // Ou
     @Override
-    public JoiaBD update(JoiaBD joia, long numero_identificacao) {
-        List<JoiaBD> existJoia = findAll().stream().filter(j -> j.getIdentificationNumber() == numero_identificacao).collect(Collectors.toList());
+    public JoiaBD update(JoiaBD joia, long numero_identificacao) throws NotFoundException {
+        findByid(numero_identificacao);
         return repo.save(joia);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(long id) throws NotFoundException {
+        findByid(id);
         repo.deleteById(id);
     }
 }
