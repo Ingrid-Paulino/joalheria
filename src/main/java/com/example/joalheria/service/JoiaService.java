@@ -64,13 +64,13 @@ public class JoiaService implements IJoiaService{
     // Ou
     @Override
     public JoiaBD update(JoiaBD joia, long numero_identificacao) throws NotFoundException {
-        findByid(numero_identificacao);
+        findById(numero_identificacao);
         return repo.save(joia);
     }
 
     @Override
     public void delete(long id) throws NotFoundException {
-        findByid(id);
+        findById(id);
         repo.deleteById(id);
     }
 }
