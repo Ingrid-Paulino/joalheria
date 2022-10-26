@@ -23,19 +23,19 @@ public class JoiaController {
     public ResponseEntity<String> insert(@Valid @RequestBody JoiaBD joia) {
         JoiaBD newJoia = service.insert(joia);
         return new ResponseEntity<>("Joia " + newJoia.getIdentificationNumber() + " criada!", HttpStatus.CREATED);
-    }
+    } // http://localhost:8081/api/testcases/new
 
     @GetMapping("joias")
     public ResponseEntity<List<JoiaBD>> findAllJoias() {
         List<JoiaBD> joias = service.findAll();
         return new ResponseEntity<>(joias, HttpStatus.CREATED);
-    }
+    } // http://localhost:8081/api/testcases
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<JoiaBD>> findById(@PathVariable long id) throws NotFoundException {
         Optional<JoiaBD> optionalJoiaBD = service.findById(id);
         return new ResponseEntity<>(optionalJoiaBD, HttpStatus.OK);
-    }
+    } // http://localhost:8081/joia/9
 
     //@PutMapping
     //public ResponseEntity<JoiaBD> update(@RequestBody JoiaBD joia) {
@@ -50,7 +50,7 @@ public class JoiaController {
                                          @RequestBody JoiaBD joia)  throws NotFoundException {
         JoiaBD joiaUpdate = service.update(joia, numero_identificacao);
         return new ResponseEntity<>(joiaUpdate, HttpStatus.OK);
-    }
+    } // http://localhost:8081/joia/atualizar?numero_identificacao=99
 
     // joia/excluir?numero_identificacao={id}
     // joia/excluir?numero_identificacao=1
@@ -59,5 +59,5 @@ public class JoiaController {
     public ResponseEntity<Void> delete(@RequestParam long numero_identificacao) throws NotFoundException {
         service.delete(numero_identificacao);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    } // http://localhost:8081/joia/excluir?numero_identificacao=99
 }
